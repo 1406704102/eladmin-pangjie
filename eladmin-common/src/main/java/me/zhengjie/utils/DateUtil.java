@@ -16,8 +16,12 @@
 
 package me.zhengjie.utils;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -88,7 +92,7 @@ public class DateUtil {
      * 日期 格式化
      *
      * @param localDateTime /
-     * @param patten /
+     * @param patten        /
      * @return /
      */
     public static String localDateTimeFormat(LocalDateTime localDateTime, String patten) {
@@ -100,7 +104,7 @@ public class DateUtil {
      * 日期 格式化
      *
      * @param localDateTime /
-     * @param df /
+     * @param df            /
      * @return /
      */
     public static String localDateTimeFormat(LocalDateTime localDateTime, DateTimeFormatter df) {
@@ -156,5 +160,92 @@ public class DateUtil {
      */
     public static LocalDateTime parseLocalDateTimeFormatyMdHms(String localDateTime) {
         return LocalDateTime.from(DFY_MD_HMS.parse(localDateTime));
+    }
+
+
+    public static Date getNowTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY));
+        return calendar.getTime();
+    }
+
+    public static Date getNowTimeReduce(Integer reduce) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - reduce);
+        return calendar.getTime();
+    }
+
+    public static Date getNowTimePlus(Integer plus) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + plus);
+        return calendar.getTime();
+    }
+
+    public static Date getNowDayReduce(Integer reduce) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - reduce);
+        return calendar.getTime();
+    }
+
+    public static Date getNowDayPlus(Integer plus) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + plus);
+        return calendar.getTime();
+    }
+
+    //获取当天起始时间
+    public static Date getStartTime(Date date) {
+        Calendar dateStart = Calendar.getInstance();
+        dateStart.setTime(date);
+        dateStart.set(Calendar.HOUR_OF_DAY, 0);
+        dateStart.set(Calendar.MINUTE, 0);
+        dateStart.set(Calendar.SECOND, 0);
+        return dateStart.getTime();
+    }
+
+    //获取当天结束时间
+    public static Date getEndTime(Date date) {
+        Calendar dateEnd = Calendar.getInstance();
+        dateEnd.setTime(date);
+        dateEnd.set(Calendar.HOUR_OF_DAY, 23);
+        dateEnd.set(Calendar.MINUTE, 59);
+        dateEnd.set(Calendar.SECOND, 59);
+        return dateEnd.getTime();
+    }
+
+    /*
+     * @Author pangjie
+     * @Description //TODO "yyyy-MM-dd hh:mm:ss"
+     * @Date 10:34 21.8.16
+     * @Param
+     * @return
+     */
+    public static String getDayString(Date date, String Format) {
+        SimpleDateFormat format = new SimpleDateFormat(Format);
+        return format.format(date);
+    }
+
+    public static Integer getTimeBetweenDays(Timestamp timestamp1, Timestamp timestamp2) {
+        LocalDate startDate = Instant.ofEpochMilli(timestamp1.getTime()).atZone(ZoneOffset.ofHours(8)).toLocalDate();
+//        System.out.println("开始时间：" + startDate);
+
+        LocalDate endDate = Instant.ofEpochMilli(timestamp2.getTime()).atZone(ZoneOffset.ofHours(8)).toLocalDate();
+//        System.out.println("结束时间：" + endDate);
+
+        long daysDiff = ChronoUnit.DAYS.between(startDate, endDate);
+//        System.out.println("两个时间之间的天数差为：" + daysDiff);
+        return Math.toIntExact(daysDiff);
+    }
+
+    public static Integer getTimeBetweenSeconds(Timestamp timestamp1, Timestamp timestamp2) {
+        long time = timestamp1.getTime();
+        LocalDateTime startDate = Instant.ofEpochMilli(time).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+//        System.out.println("开始时间：" + startDate);
+
+        LocalDateTime endDate = Instant.ofEpochMilli(timestamp2.getTime()).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
+//        System.out.println("结束时间：" + endDate);
+        long secondsDiff = ChronoUnit.SECONDS.between(startDate, endDate);
+//        System.out.println("两个时间之间的秒数差为：" + secondsDiff);
+        return Math.toIntExact(secondsDiff);
     }
 }

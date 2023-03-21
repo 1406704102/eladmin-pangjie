@@ -86,8 +86,19 @@
             <artifactId>oshi-core</artifactId>
             <version>6.1.4</version>
         </dependency>
+        <!--华为obs        -->
+        <dependency>
+            <groupId>com.huaweicloud</groupId>
+            <artifactId>esdk-obs-java</artifactId>
+            <version>3.19.7</version>
+        </dependency>
+        <!--        图片压缩-->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.11</version>
+        </dependency>
     </dependencies>
-
     <!-- 打包 -->
     <build>
         <plugins>
