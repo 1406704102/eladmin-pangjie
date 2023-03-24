@@ -165,7 +165,6 @@ public class QueryHelp {
                                 list.add(cb.between(getExpression(attributeName, join, root).as((Class<? extends Comparable>) between.get(0).getClass()),
                                         (Comparable) between.get(0), (Comparable) between.get(1)));
                             }
-
                             break;
                         default: break;
                     }
