@@ -74,7 +74,9 @@ public class DeployController {
     @PostMapping
 	@PreAuthorize("@el.check('deploy:add')")
     public ResponseEntity<Object> createDeploy(@Validated @RequestBody Deploy resources){
-		throw new BadRequestException("演示环境不可操作");
+//		throw new BadRequestException("演示环境不可操作");
+		deployService.create(resources);
+		return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Log("修改部署")

@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.security.service.OnlineUserService;
+import me.zhengjie.utils.EncryptUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,11 @@ public class OnlineController {
     @DeleteMapping
     @PreAuthorize("@el.check()")
     public ResponseEntity<Object> deleteOnlineUser(@RequestBody Set<String> keys) throws Exception {
-        throw new BadRequestException("演示环境不可操作");
+        for (String key : keys) {
+            // 解密Key
+            key = EncryptUtils.desDecrypt(key);
+            onlineUserService.kickOut(key);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
